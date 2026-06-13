@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Sparkles } from "lucide-react";
+import { Calendar, MapPin, Sparkles, Download, Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Event = {
   label: string;
@@ -93,24 +94,39 @@ export function InvitationCard(props: Props) {
       </div>
 
       <div className="space-y-4">
-        {events.map((ev) => (
-          <div
-            key={ev.label}
-            className="rounded-lg border border-[color:var(--gold)]/25 bg-white/60 p-4 backdrop-blur-sm"
-          >
-            <p className="font-serif text-lg text-[color:var(--maroon)]">{ev.label}</p>
-            <div className="mt-2 flex flex-col gap-1.5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:gap-4">
-              <span className="flex items-center gap-2">
-                <Calendar className="h-3.5 w-3.5 text-[color:var(--gold)]" />
-                {ev.date}{ev.time ? ` · ${ev.time}` : ""}
-              </span>
-              <span className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[color:var(--gold)]" />
-                <span>{ev.venue}</span>
-              </span>
+        {events.map((ev) => {
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`;
+          return (
+            <div
+              key={ev.label}
+              className="rounded-lg border border-[color:var(--gold)]/25 bg-white/60 p-4 backdrop-blur-sm"
+            >
+              <p className="font-serif text-lg text-[color:var(--maroon)]">{ev.label}</p>
+              <div className="mt-2 flex flex-col gap-1.5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:gap-4">
+                <span className="flex items-center gap-2">
+                  <Calendar className="h-3.5 w-3.5 text-[color:var(--gold)]" />
+                  {ev.date}{ev.time ? ` · ${ev.time}` : ""}
+                </span>
+                <span className="flex items-start gap-2">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[color:var(--gold)]" />
+                  <span>{ev.venue}</span>
+                </span>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button asChild size="sm" variant="outline" className="h-8 border-[color:var(--gold)]/40 text-[color:var(--maroon)] hover:bg-[color:var(--gold)]/10">
+                  <a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+                    <MapPin className="mr-1.5 h-3.5 w-3.5" /> Open in Google Maps
+                  </a>
+                </Button>
+                <Button asChild size="sm" variant="ghost" className="h-8 text-[color:var(--maroon)] hover:bg-[color:var(--maroon)]/10">
+                  <a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+                    <Share2 className="mr-1.5 h-3.5 w-3.5" /> Share Location
+                  </a>
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {invitingFamily && (
@@ -118,6 +134,16 @@ export function InvitationCard(props: Props) {
           <span className="font-serif text-[color:var(--maroon)]">Inviting Family:</span> {invitingFamily}
         </p>
       )}
+
+      <div className="mt-8 flex justify-center">
+        <Button
+          variant="outline"
+          className="border-[color:var(--gold)]/50 text-[color:var(--maroon)] hover:bg-[color:var(--gold)]/10"
+          onClick={() => alert("Official invitation card download will be available soon.")}
+        >
+          <Download className="mr-2 h-4 w-4" /> Download Official Invitation
+        </Button>
+      </div>
 
       <footer className="mt-8 border-t border-[color:var(--gold)]/25 pt-4 text-center">
         <p className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--gold)]">
