@@ -1,41 +1,58 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Sparkles, Download, Share2 } from "lucide-react";
+import { Calendar, MapPin, Sparkles, Download, Share2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-type Event = {
-  label: string;
-  date: string;
-  time?: string;
-  venue: string;
-};
+import type { InvitationDetails, WishesFrom } from "@/data/weddingData";
 
 type Props = {
   index: number;
-  side: "bride" | "groom";
-  intro: string;
-  primaryName: string;
-  primaryTitle: string;
-  primaryParents?: string;
-  partnerLabel: string;
-  partnerName: string;
-  partnerTitle: string;
-  partnerParents?: string;
-  events: Event[];
-  invitingFamily?: string;
-  compliments: string;
+  invitation: InvitationDetails;
+  wishesFrom: WishesFrom;
+  contacts: string[];
+  entranceAnimation?: boolean;
 };
 
-export function InvitationCard(props: Props) {
-  const { index, side, intro, primaryName, primaryTitle, primaryParents, partnerLabel, partnerName, partnerTitle, partnerParents, events, invitingFamily, compliments } = props;
+const WISHES_LABELS: Record<string, string> = {
+  "siblings.boys": "Brothers",
+  "siblings.girls": "Sister",
+  "nephews.boys": "Nephews",
+};
+
+export function InvitationCard({ index, invitation, wishesFrom, contacts, entranceAnimation = true }: Props) {
+  const {
+    side,
+    intro,
+    primaryName,
+    primaryTitle,
+    primaryParents,
+    partnerLabel,
+    partnerName,
+    partnerTitle,
+    partnerParents,
+    events,
+    invitingFamily,
+  } = invitation;
+
+  const wishSections: { label: string; names: string[] }[] = [];
+
+  if (wishesFrom.siblings) {
+    if (wishesFrom.siblings.boys.length > 0) {
+      wishSections.push({ label: WISHES_LABELS["siblings.boys"], names: wishesFrom.siblings.boys });
+    }
+    if (wishesFrom.siblings.girls.length > 0) {
+      wishSections.push({ label: WISHES_LABELS["siblings.girls"], names: wishesFrom.siblings.girls });
+    }
+  }
+  if (wishesFrom.nephews.boys.length > 0) {
+    wishSections.push({ label: WISHES_LABELS["nephews.boys"], names: wishesFrom.nephews.boys });
+  }
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 60 }}
+      initial={entranceAnimation ? { opacity: 0, y: 60 } : false}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 0.15 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay: entranceAnimation ? 0.15 + index * 0.15 : 0, ease: [0.22, 1, 0.36, 1] }}
       className="invitation-card relative overflow-hidden rounded-2xl p-6 sm:p-10"
     >
-      {/* corner ornaments */}
       <div className="pointer-events-none absolute inset-3 rounded-xl border border-[color:var(--gold)]/30" />
       <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[color:var(--gold)]/10 blur-2xl" />
       <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-[color:var(--maroon)]/10 blur-2xl" />
@@ -138,18 +155,53 @@ export function InvitationCard(props: Props) {
       <div className="mt-8 flex justify-center">
         <Button
           variant="outline"
-          className="border-[color:var(--gold)]/50 text-[color:var(--maroon)] hover:bg-[color:var(--gold)]/10"
-          onClick={() => alert("Official invitation card download will be available soon.")}
+          disabled
+          className="border-[color:var(--gold)]/50 text-[color:var(--maroon)]/60"
+          aria-label="Official invitation download coming soon"
         >
           <Download className="mr-2 h-4 w-4" /> Download Official Invitation
         </Button>
       </div>
 
-      <footer className="mt-8 border-t border-[color:var(--gold)]/25 pt-4 text-center">
+      <footer className="mt-8 border-t border-[color:var(--gold)]/25 pt-6 text-center">
         <p className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--gold)]">
           With best compliments from
         </p>
-        <p className="mt-2 font-serif text-sm text-[color:var(--maroon)]">{compliments}</p>
+
+        <div className="mt-4 space-y-4">
+          {wishSections.map((section) => (
+            <div key={section.label}>
+              <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                {section.label}
+              </p>
+              <div className="mt-1 space-y-1">
+                {section.names.map((name) => (
+                  <p key={name} className="font-serif text-sm text-[color:var(--maroon)]">
+                    {name}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="ornament-divider my-6" />
+
+        <p className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--gold)]">
+          Contact Us
+        </p>
+        <div className="mt-3 flex flex-col items-center gap-2">
+          {contacts.map((phone) => (
+            <a
+              key={phone}
+              href={`tel:${phone}`}
+              className="inline-flex items-center gap-2 font-serif text-sm text-[color:var(--maroon)] transition-colors hover:text-[color:var(--gold)]"
+            >
+              <Phone className="h-3.5 w-3.5 text-[color:var(--gold)]" />
+              {phone}
+            </a>
+          ))}
+        </div>
       </footer>
     </motion.article>
   );

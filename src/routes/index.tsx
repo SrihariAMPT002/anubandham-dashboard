@@ -1,17 +1,29 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SidebarContent } from "@/components/wedding/SidebarContent";
 import { InvitationCard } from "@/components/wedding/InvitationCard";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { weddingData, type WeddingSideKey } from "@/data/weddingData";
+import {
+  DEFAULT_PAGE_DESCRIPTION,
+  DEFAULT_PAGE_TITLE,
+  getInitialActiveSide,
+  getPageTitle,
+} from "@/lib/wedding-side";
+
+const contentTransition = {
+  duration: 0.5,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Praveen weds Sree Revathi · Wedding Invitation" },
-      { name: "description", content: "Join us in celebrating the wedding of Praveen Kumar & Sree Revathi on 25 June 2026 at P.M.R. Gardens, Peddakothapally." },
+      { title: DEFAULT_PAGE_TITLE },
+      { name: "description", content: DEFAULT_PAGE_DESCRIPTION },
     ],
   }),
   component: Index,
@@ -19,11 +31,22 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [open, setOpen] = useState(false);
+  const [activeSide, setActiveSide] = useState<WeddingSideKey>(getInitialActiveSide);
+
+  const sideData = weddingData[activeSide];
+
+  useEffect(() => {
+    document.title = getPageTitle();
+  }, []);
+
+  const handleSideChange = (side: WeddingSideKey) => {
+    setActiveSide(side);
+    setOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto flex max-w-[1400px] flex-col lg:flex-row">
-        {/* Mobile top bar */}
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--gold)]/25 bg-background/85 px-4 py-3 backdrop-blur-md lg:hidden">
           <div>
             <p className="font-serif text-lg text-[color:var(--maroon)] leading-none">Praveen & Revathi</p>
@@ -36,97 +59,52 @@ function Index() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[88vw] max-w-sm bg-background p-0">
-              <SidebarContent />
+              <SidebarContent activeSide={activeSide} onSideChange={handleSideChange} />
             </SheetContent>
           </Sheet>
         </header>
 
-        {/* Desktop sidebar */}
         <aside className="sticky top-0 hidden h-screen w-[340px] shrink-0 border-r border-[color:var(--gold)]/25 bg-gradient-to-b from-[color:var(--cream)] to-white/80 lg:block">
-          <SidebarContent />
+          <SidebarContent activeSide={activeSide} onSideChange={handleSideChange} />
         </aside>
 
-        {/* Main content */}
         <main className="flex-1 px-4 py-10 sm:px-8 lg:px-14 lg:py-16">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto max-w-3xl text-center"
-          >
-            <p className="text-[11px] uppercase tracking-[0.4em] text-[color:var(--gold)]">
-              A Wedding Invitation
-            </p>
-            <h1 className="mt-4 font-serif text-4xl leading-tight text-[color:var(--maroon)] sm:text-5xl lg:text-6xl">
-              A Celebration of Love,
-              <br />
-              Family & Blessings
-            </h1>
-            <div className="ornament-divider my-6">
-              <span className="font-serif text-xs uppercase tracking-[0.3em]">Welcome</span>
-            </div>
-            <p className="mx-auto max-w-2xl text-base italic text-muted-foreground sm:text-lg">
-              "With immense joy, I invite you to celebrate the beautiful union of my sibling. Please join us in showering the couple with love and blessings."
-            </p>
-          </motion.section>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSide}
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={contentTransition}
+            >
+              <section className="mx-auto max-w-3xl text-center">
+                <p className="text-[11px] uppercase tracking-[0.4em] text-[color:var(--gold)]">
+                  A Wedding Invitation
+                </p>
+                <h1 className="mt-4 font-serif text-4xl leading-tight text-[color:var(--maroon)] sm:text-5xl lg:text-6xl">
+                  A Celebration of Love,
+                  <br />
+                  Family & Blessings
+                </h1>
+                <div className="ornament-divider my-6">
+                  <span className="font-serif text-xs uppercase tracking-[0.3em]">Welcome</span>
+                </div>
+                <p className="mx-auto max-w-2xl text-base italic text-muted-foreground sm:text-lg">
+                  &ldquo;{sideData.greetingMessage}&rdquo;
+                </p>
+              </section>
 
-          <div className="mx-auto mt-12 grid max-w-6xl gap-8 xl:grid-cols-2">
-            <InvitationCard
-              index={0}
-              side="bride"
-              intro="We solicit your gracious presence with family & friends on the auspicious occasion of the marriage of our daughter"
-              primaryName="Chi. La. Sow. Sree Revathi"
-              primaryTitle="Sub-Inspector of Police"
-              primaryParents="Second D/o. Smt. Tagili Lakshmi & Sri Tagili Balaswamy"
-              partnerLabel="Groom"
-              partnerName="Chi. Praveen Kumar"
-              partnerTitle="Sub-Inspector of Police"
-              partnerParents="Only S/o. Smt. Namala Bharathi & Sri Namala Dharmapuri"
-              events={[
-                {
-                  label: "Prathanam",
-                  date: "Wednesday, 24 June 2026",
-                  time: "12:00 p.m. onwards",
-                  venue: "Our Residence, Peddakothapally, Nagar Kurnool Dist.",
-                },
-                {
-                  label: 'Sumuhurtham · "Karkataka Lagnam"',
-                  date: "Thursday, 25 June 2026",
-                  time: "09:12 a.m.",
-                  venue: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool Dist.",
-                },
-              ]}
-              compliments="Smt. Maddela Renuka — Sri Maddela Raju, Near & Dear"
-            />
-
-            <InvitationCard
-              index={1}
-              side="groom"
-              intro="We solicit your gracious presence with family & friends on the auspicious occasion of the marriage of our only son"
-              primaryName="Chi. Praveen Kumar"
-              primaryTitle="Sub-Inspector of Police"
-              partnerLabel="Bride"
-              partnerName="Chi. La. Sow. Sree Revathi"
-              partnerTitle="Sub-Inspector of Police"
-              partnerParents="Second D/o. Smt. Tagili Lakshmi & Sri Tagili Balaswamy"
-              events={[
-                {
-                  label: 'Sumuhurtham · "Karkataka Lagnam"',
-                  date: "Thursday, 25 June 2026",
-                  time: "09:12 a.m.",
-                  venue: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool Dist.",
-                },
-                {
-                  label: "Reception",
-                  date: "Sunday, 28 June 2026",
-                  time: "7:00 p.m. onwards",
-                  venue: "Taher Gardens, Kamareddy Dist.",
-                },
-              ]}
-              invitingFamily="Smt. Namala Bharathi & Sri Namala Dharmapuri"
-              compliments="Smt. Vendi Neeraja & Sri Vendi Naresh, Near & Dear"
-            />
-          </div>
+              <div className="mx-auto mt-12 max-w-2xl">
+                <InvitationCard
+                  index={0}
+                  invitation={sideData.invitation}
+                  wishesFrom={sideData.wishesFrom}
+                  contacts={sideData.contacts}
+                  entranceAnimation={false}
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
           <motion.footer
             initial={{ opacity: 0 }}
