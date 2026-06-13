@@ -40,7 +40,7 @@ export function InvitationCard(props: Props) {
       <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-[color:var(--maroon)]/10 blur-2xl" />
 
       <header className="relative text-center">
-        <div className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.35em] text-[color:var(--gold)] sm:text-xs">
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] uppercase tracking-[0.2em] text-[color:var(--gold)] sm:tracking-[0.3em] sm:text-xs">
           <span>Srirasthu</span>
           <span className="text-[color:var(--maroon)]/50">◆</span>
           <span>Shubhamasthu</span>
