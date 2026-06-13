@@ -55,7 +55,7 @@ function Index() {
             className="mx-auto max-w-3xl text-center"
           >
             <p className="text-[11px] uppercase tracking-[0.4em] text-[color:var(--gold)]">
-              A Sister's Invitation
+              A Wedding Invitation
             </p>
             <h1 className="mt-4 font-serif text-4xl leading-tight text-[color:var(--maroon)] sm:text-5xl lg:text-6xl">
               A Celebration of Love,
