@@ -5,10 +5,10 @@ export const DEFAULT_PAGE_TITLE = "Sree Revathi & Praveen Kumar - Wedding Invita
 export const DEFAULT_PAGE_DESCRIPTION =
   "Join us in celebrating the wedding of Sree Revathi & Praveen Kumar on 25 June 2026.";
 
-export function getPageTitle(): string {
-  return import.meta.env.VITE_IS_GROOM_SIDE === "true"
-    ? "Praveen & Sree Revathi - Wedding Invitation"
-    : "Sree Revathi & Praveen - Wedding Invitation";
+export function getPageTitle(side: WeddingSideKey = getInitialActiveSide()): string {
+  return side === "groomSide"
+    ? "Praveen Kumar & Sree Revathi - Wedding Invitation"
+    : "Sree Revathi & Praveen Kumar - Wedding Invitation";
 }
 
 export function getInitialActiveSide(): WeddingSideKey {

@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Heart } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Countdown } from "@/components/wedding/Countdown";
+import { Gallery } from "@/components/wedding/Gallery";
 import { SidebarContent } from "@/components/wedding/SidebarContent";
 import { InvitationCard } from "@/components/wedding/InvitationCard";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { MusicPlayer } from "@/components/wedding/MusicPlayer";
+import { TravelGuide } from "@/components/wedding/TravelGuide";
+import { WeddingCalendar } from "@/components/wedding/WeddingCalendar";
 import { Button } from "@/components/ui/button";
 import { weddingData, type WeddingSideKey } from "@/data/weddingData";
+import { getOppositeSide, getSideToggleLabel } from "@/lib/wedding-side";
 import {
   DEFAULT_PAGE_DESCRIPTION,
   DEFAULT_PAGE_TITLE,
@@ -30,45 +35,105 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [open, setOpen] = useState(false);
   const [activeSide, setActiveSide] = useState<WeddingSideKey>(getInitialActiveSide);
 
   const sideData = weddingData[activeSide];
+  const galleryImages = sideData.heroImages;
+  const oppositeSide = getOppositeSide(activeSide);
+  const headerNames =
+    activeSide === "groomSide" ? "Praveen Kumar & Sree Revathi" : "Sree Revathi & Praveen Kumar";
 
   useEffect(() => {
-    document.title = getPageTitle();
-  }, []);
+    document.title = getPageTitle(activeSide);
+  }, [activeSide]);
 
-  const handleSideChange = (side: WeddingSideKey) => {
-    setActiveSide(side);
-    setOpen(false);
-  };
+  const handleSideChange = (side: WeddingSideKey) => setActiveSide(side);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto flex max-w-[1400px] flex-col lg:flex-row">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--gold)]/25 bg-background/85 px-4 py-3 backdrop-blur-md lg:hidden">
-          <div>
-            <p className="font-serif text-lg text-[color:var(--maroon)] leading-none">Praveen & Revathi</p>
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[color:var(--gold)]">25 June 2026</p>
-          </div>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="border-[color:var(--gold)]/40 text-[color:var(--maroon)]">
-                {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[88vw] max-w-sm bg-background p-0">
-              <SidebarContent activeSide={activeSide} onSideChange={handleSideChange} />
-            </SheetContent>
-          </Sheet>
-        </header>
-
         <aside className="sticky top-0 hidden h-screen w-[340px] shrink-0 border-r border-[color:var(--gold)]/25 bg-gradient-to-b from-[color:var(--cream)] to-white/80 lg:block">
           <SidebarContent activeSide={activeSide} onSideChange={handleSideChange} />
         </aside>
 
-        <main className="flex-1 px-4 py-10 sm:px-8 lg:px-14 lg:py-16">
+        <main className="flex-1 px-4 py-6 sm:px-8 lg:px-14 lg:py-16">
+          <div className="mb-10 space-y-8 lg:hidden">
+            <header className="text-center">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-[color:var(--gold)]/40">
+                <Heart className="h-5 w-5 text-[color:var(--maroon)]" fill="currentColor" />
+              </div>
+              <p className="mt-3 font-serif text-xl text-[color:var(--maroon)]">{headerNames}</p>
+              <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-[color:var(--gold)]">
+                Shubha Vivaham
+              </p>
+            </header>
+
+            <section className="text-center">
+              <p className="text-[11px] uppercase tracking-[0.4em] text-[color:var(--gold)]">
+                A Wedding Invitation
+              </p>
+              <h1 className="mt-4 font-serif text-4xl leading-tight text-[color:var(--maroon)]">
+                A Celebration of Love,
+                <br />
+                Family & Blessings
+              </h1>
+              <div className="ornament-divider my-6">
+                <span className="font-serif text-xs uppercase tracking-[0.3em]">Welcome</span>
+              </div>
+              <p className="mx-auto max-w-2xl text-base italic text-muted-foreground">
+                &ldquo;{sideData.greetingMessage}&rdquo;
+              </p>
+            </section>
+
+            <section>
+              <h3 className="ornament-divider mb-4 font-serif text-sm uppercase tracking-[0.3em]">
+                Countdown
+              </h3>
+              <Countdown />
+            </section>
+
+            <section>
+              <h3 className="ornament-divider mb-4 font-serif text-sm uppercase tracking-[0.3em]">
+                Invitation View
+              </h3>
+              <InvitationCard
+                index={0}
+                invitation={sideData.invitation}
+                wishesFrom={sideData.wishesFrom}
+                contacts={sideData.contacts}
+                entranceAnimation={false}
+              />
+              <Button
+                variant="outline"
+                className="mt-4 w-full font-serif border-[color:var(--gold)]/40 text-[color:var(--maroon)] hover:bg-[color:var(--gold)]/10"
+                onClick={() => handleSideChange(oppositeSide)}
+              >
+                {getSideToggleLabel(activeSide)}
+              </Button>
+            </section>
+
+            <section>
+              <h3 className="ornament-divider mb-4 font-serif text-sm uppercase tracking-[0.3em]">
+                Calendar
+              </h3>
+              <WeddingCalendar />
+            </section>
+
+            <section>
+              <h3 className="ornament-divider mb-4 font-serif text-sm uppercase tracking-[0.3em]">
+                How to Reach
+              </h3>
+              <TravelGuide />
+            </section>
+
+            <section>
+              <h3 className="ornament-divider mb-4 font-serif text-sm uppercase tracking-[0.3em]">
+                Memories
+              </h3>
+              <Gallery images={galleryImages} />
+            </section>
+          </div>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSide}
@@ -76,6 +141,7 @@ function Index() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={contentTransition}
+              className="hidden lg:block"
             >
               <section className="mx-auto max-w-3xl text-center">
                 <p className="text-[11px] uppercase tracking-[0.4em] text-[color:var(--gold)]">
@@ -122,6 +188,7 @@ function Index() {
           </motion.footer>
         </main>
       </div>
+      <MusicPlayer />
     </div>
   );
 }

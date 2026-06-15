@@ -12,10 +12,10 @@ function calc() {
 }
 
 export function Countdown() {
-  const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [t, setT] = useState(() => calc());
   useEffect(() => {
-    setT(calc());
     const id = setInterval(() => setT(calc()), 1000);
+    setT(calc());
     return () => clearInterval(id);
   }, []);
 

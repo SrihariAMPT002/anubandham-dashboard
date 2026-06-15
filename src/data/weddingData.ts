@@ -1,3 +1,7 @@
+import couplePhoto1 from "../DSC08165.JPG";
+import couplePhoto2 from "../DSC08385.JPG";
+import couplePhoto3 from "../DSC08390.JPG";
+
 export type WeddingSideKey = "brideSide" | "groomSide";
 
 export type WishesFrom = {
@@ -21,6 +25,7 @@ export type WeddingEvent = {
   date: string;
   time?: string;
   venue: string;
+  mapsUrl?: string;
 };
 
 export type InvitationDetails = {
@@ -35,6 +40,7 @@ export type InvitationDetails = {
   partnerParents?: string;
   events: WeddingEvent[];
   invitingFamily?: string;
+  complimentsFrom?: string;
 };
 
 export type SideData = {
@@ -56,29 +62,29 @@ export const weddingData: WeddingData = {
       "With immense joy, I invite you to celebrate the beautiful union of my sister. Please join us in showering the couple with love and blessings.",
     wishesFrom: {
       siblings: {
-        boys: ["Sri [Elder Brother]", "Sri [Younger Brother]"],
-        girls: ["Smt. [Sister]"],
+        boys: ["Karthik", "Srihari"],
+        girls: ["Srirekha"],
       },
       nephews: {
-        boys: ["Master [Nephew]", "Master [Nephew]"],
+        boys: ["Bhanuchandar", "Vignesh"],
       },
     },
     contacts: ["9885546917", "6309281904"],
     heroImages: [
       {
         id: "bride-1",
-        label: "Sree Revathi",
-        url: "https://images.unsplash.com/photo-1522673604730-dc317f1a5f1d?w=480&h=600&fit=crop",
+        label: "Together",
+        url: couplePhoto1,
       },
       {
         id: "bride-2",
-        label: "Family Moments",
-        url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=480&h=600&fit=crop",
+        label: "Together",
+        url: couplePhoto2,
       },
       {
         id: "bride-3",
         label: "Together",
-        url: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=480&h=600&fit=crop",
+        url: couplePhoto3,
       },
     ],
     invitation: {
@@ -98,6 +104,7 @@ export const weddingData: WeddingData = {
           date: "Wednesday, 24 June 2026",
           time: "12:00 p.m. onwards",
           venue: "Our Residence, Peddakothapally, Nagar Kurnool Dist.",
+          mapsUrl: "https://maps.app.goo.gl/NyTqDFzgx8ikRvjQ6",
         },
         {
           label: 'Sumuhurtham · "Karkataka Lagnam"',
@@ -106,32 +113,34 @@ export const weddingData: WeddingData = {
           venue: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool Dist.",
         },
       ],
+      invitingFamily: "Smt. Tagili Lakshmi & Sri Tagili Balaswamy",
+      complimentsFrom: "Smt. Maddela Renuka & Sri Maddela Raju, Near & Dear",
     },
   },
   groomSide: {
     greetingMessage:
-      "With heartfelt warmth, our family invites you to witness and bless the wedding of our son. Your presence will make our celebration complete.",
+      "With heartfelt warmth, my family and I invite you to witness and bless this joyous occasion of my wedding. Your presence will make our celebration complete.",
     wishesFrom: {
       nephews: {
-        boys: ["Master [Nephew]", "Master [Nephew]"],
+        boys: ["Yogeshwar", "Akhilesh"],
       },
     },
     contacts: ["9951346368", "9848937139"],
     heroImages: [
       {
         id: "groom-1",
-        label: "Praveen Kumar",
-        url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=480&h=600&fit=crop",
+        label: "Together",
+        url: couplePhoto1,
       },
       {
         id: "groom-2",
-        label: "Family Moments",
-        url: "https://images.unsplash.com/photo-1520854221256-174b7ce0ef89?w=480&h=600&fit=crop",
+        label: "Together",
+        url: couplePhoto2,
       },
       {
         id: "groom-3",
         label: "Together",
-        url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=480&h=600&fit=crop",
+        url: couplePhoto3,
       },
     ],
     invitation: {
@@ -159,6 +168,7 @@ export const weddingData: WeddingData = {
         },
       ],
       invitingFamily: "Smt. Namala Bharathi & Sri Namala Dharmapuri",
+      complimentsFrom: "Smt. Vendi Neeraja & Sri Vendi Naresh, Near & Dear",
     },
   },
 };

@@ -13,7 +13,12 @@ const VENUES = [
     title: "Peddakothapally · Prathanam & Wedding",
     query: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool",
     modes: [
-      { icon: Car, label: "By Car", text: "Take the Kalwakurthi Road to reach Peddakothapally directly." },
+      {
+        icon: Car,
+        label: "By Car",
+        text: "Take the Kalwakurthi Road to reach Peddakothapally directly.",
+        href: "https://maps.app.goo.gl/ok16PBzfYQYuFeAD9",
+      },
       { icon: Bus, label: "By Bus", text: "Go to MGBS (Hyderabad), Platform 34, board a Kollapur-bound bus, request a drop at Peddakothapally." },
     ],
   },
@@ -49,7 +54,17 @@ export function TravelGuide() {
                   <div key={m.label} className="flex gap-3">
                     <m.icon className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--gold)]" />
                     <p>
-                      <span className="font-medium maroon-text">{m.label}:</span> {m.text}
+                      <span className="font-medium maroon-text">{m.label}:</span> {m.text}{" "}
+                      {"href" in m && m.href ? (
+                        <a
+                          href={m.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-[color:var(--gold)] underline underline-offset-4"
+                        >
+                          View car route
+                        </a>
+                      ) : null}
                     </p>
                   </div>
                 ))}

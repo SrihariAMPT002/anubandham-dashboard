@@ -1,6 +1,7 @@
 import { Countdown } from "./Countdown";
 import { Gallery } from "./Gallery";
 import { TravelGuide } from "./TravelGuide";
+import { WeddingCalendar } from "./WeddingCalendar";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { weddingData, type WeddingSideKey } from "@/data/weddingData";
@@ -40,6 +41,10 @@ export function SidebarContent({ activeSide, onSideChange }: Props) {
 
       <Section title="Countdown">
         <Countdown />
+      </Section>
+
+      <Section title="Calendar">
+        <WeddingCalendar />
       </Section>
 
       <Section title="How to Reach">
