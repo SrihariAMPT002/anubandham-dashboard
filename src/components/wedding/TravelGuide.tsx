@@ -11,15 +11,19 @@ const VENUES = [
   {
     id: "peddakothapally",
     title: "Peddakothapally · Prathanam & Wedding",
-    query: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool",
+    query: "P.M.R. Gardens, Peddakothapally, Nagar Kurnool Dist.",
     modes: [
       {
         icon: Car,
         label: "By Car",
-        text: "Take the Kalwakurthi Road to reach Peddakothapally directly.",
-        href: "https://maps.app.goo.gl/ok16PBzfYQYuFeAD9",
+        text: "Best car route from Hyderabad to PMR Gardens via NH44 and Kalwakurthy Road.",
+        href: "https://maps.app.goo.gl/JkaPdoSAz64ZxPY29",
       },
-      { icon: Bus, label: "By Bus", text: "Go to MGBS (Hyderabad), Platform 34, board a Kollapur-bound bus, request a drop at Peddakothapally." },
+      {
+        icon: Bus,
+        label: "By Bus",
+        text: "Go to MGBS (Hyderabad), Platform 34, board a Kollapur-bound bus, request a drop at Peddakothapally.",
+      },
     ],
   },
   {

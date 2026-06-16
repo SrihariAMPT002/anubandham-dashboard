@@ -59,7 +59,7 @@ export type WeddingData = {
 export const weddingData: WeddingData = {
   brideSide: {
     greetingMessage:
-      "With immense joy, I invite you to celebrate the beautiful union of my sister. Please join us in showering the couple with love and blessings.",
+      "With immense joy, we invite you to celebrate the beautiful union of our loved ones. Please join us in showering the couple with love and blessings.",
     wishesFrom: {
       siblings: {
         boys: ["Karthik", "Srihari"],

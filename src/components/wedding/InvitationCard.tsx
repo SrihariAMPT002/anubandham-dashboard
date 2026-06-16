@@ -15,8 +15,8 @@ type Props = {
 };
 
 const WISHES_LABELS: Record<string, string> = {
-  "siblings.boys": "Brothers",
-  "siblings.girls": "Sister",
+  "siblings.boys": "Family",
+  "siblings.girls": "Family",
   "nephews.boys": "Nephews",
 };
 
