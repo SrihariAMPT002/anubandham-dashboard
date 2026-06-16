@@ -23,7 +23,6 @@ export function Gallery({ images }: Props) {
                 className="h-full w-full object-cover"
               />
             </div>
-            <p className="mt-2 text-center font-serif text-xs text-[color:var(--maroon)]">{image.label}</p>
           </div>
         </div>
       ))}
